@@ -1,0 +1,608 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+body
+{
+	margin: 0px;
+	background-color: rgb(246,246,246)
+}
+
+a
+{
+	color: orangered;
+	transition: color 0.5s ease;
+}
+
+a:hover
+{
+	color: red;
+}
+
+.unselectable
+{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.grid-container 
+{
+	width: 100%;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	display: grid;
+	background-color: rgb(250,250,250);
+	grid-template-columns: 1fr 2fr 2fr 1fr;
+	grid-template-rows: 120px 1fr 290px;
+	grid-template-areas: "Header Header Header Header" "lox-Sections lox lox ." "Footer Footer Footer Footer";
+}
+
+.Header { grid-area: Header; }
+
+.lox-Sections { grid-area: lox-Sections; }
+
+.lox { grid-area: lox; }
+
+.Footer { grid-area: Footer; }
+
+
+.lox-Sections
+{
+	display: none;
+}
+
+
+.header-fixed {
+	background-color: rgb(250,250,250);
+	padding: 20px 40px;
+	height: 80px;
+	color: black;
+	box-sizing: border-box;
+	top:-100px;
+	border-bottom: 1px solid rgba(128,128,128,0.3);
+	font-family: 'Fjalla One', sans-serif;
+	-webkit-transition:top 0.3s;
+	transition:top 0.3s;
+}
+
+.header-fixed .header-limiter {
+	max-width: 1200px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+
+.header-fixed-placeholder{
+	height: 80px;
+	display: none;
+}
+
+/* Logo */
+
+.header-fixed .header-limiter .header-company-logo {
+	float: left;
+	margin: 0;
+	margin-top: -9.1px;
+	font-size: 26pt;
+	font-family: 'Prompt', sans-serif;
+	/*text-shadow: 4px 4px 6px rgba(0, 0, 0, 1), 4px 4px 6px rgba(0, 0, 0, 1);*/
+}
+
+.header-fixed .header-limiter .header-company-logo-guide
+{
+	color: #FF4136;
+}
+
+.header-fixed .header-limiter .header-company-logo-name
+{
+	cursor: pointer;
+	transition: color 0.5s ease;
+}
+
+.header-fixed .header-limiter .header-company-logo-name:hover
+{
+	color: #ccc;
+}
+
+
+/* The navigation links */
+
+.header-fixed .header-limiter a {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.header-fixed .header-limiter nav {
+	font:16px Arial, Helvetica, sans-serif;
+	line-height: 40px;
+	float: right;
+}
+
+.header-fixed .header-limiter nav a{
+	display: inline-block;
+	padding: 0 5px;
+	text-decoration:none;
+	color: #808080;
+	opacity: 0.9;
+	transition: opacity 0.5s, text-shadow 0.5s, color 0.5s ease;
+}
+
+.header-fixed .header-limiter nav a:hover{
+	opacity: 1;
+}
+
+.header-fixed .header-limiter nav a.selected {
+	color: orangered;
+	pointer-events: none;
+	opacity: 1;
+	text-decoration: underline;
+}
+
+
+.header-fixed .header-limiter nav a.notavailable
+{
+	transition: none !important;
+	text-shadow: none !important;
+	color: rgba(255,255,255,0.4);
+	cursor: not-allowed;
+	text-decoration: line-through;
+}
+
+.header-fixed .header-limiter nav a.notavailable:hover
+{
+	opacity: 0.9;
+}
+
+/* Fixed version of the header */
+
+body.fixed .header-fixed {
+	padding: 10px 40px;
+	height: 50px;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+
+body.fixed .header-fixed-placeholder {
+	display: block;
+}
+
+body.fixed .header-fixed .header-limiter h1 {
+	font-size: 24px;
+	line-height: 30px;
+}
+
+body.fixed .header-fixed .header-limiter nav {
+	line-height: 28px;
+	font-size: 13px;
+}
+
+
+/* Making the header responsive */
+
+@media all and (max-width: 600px) {
+
+	.header-fixed {
+		padding: 20px 0;
+		height: 75px;
+	}
+
+	.header-fixed .header-limiter h1 {
+		float: none;
+		margin: -8px 0 10px;
+		text-align: center;
+		font-size: 24px;
+		line-height: 1;
+	}
+
+	.header-fixed .header-limiter nav {
+		line-height: 1;
+		float:none;
+	}
+
+	.header-fixed .header-limiter nav a {
+		font-size: 13px;
+	}
+
+	body.fixed .header-fixed {
+		display: none;
+	}
+
+}
+
+/*CONTENT*/
+.lox
+{
+	margin-bottom: 40px;
+}
+.lox .Guide-Heading h1
+{
+	color: #5c5c5c;
+	font-family: 'Prompt', sans-serif;
+}
+.lox .information
+{
+	font-family: 'Work Sans', sans-serif;
+	border-radius: 14px;
+	max-width: 420px;
+	min-height: 30px;
+	background-color: rgba(220,220,220,0.8);
+}
+.lox .information p
+{
+	color: #878787;
+	width: 100%;
+	text-align: center;
+	padding-top: 3px;
+}
+
+.lox .information .date
+{
+	color: #aaa;
+}
+
+.Guide-Heading .head-text
+{
+	color: #aaa;
+	font-family: 'Roboto', sans-serif;
+}
+.guide-img
+{
+	width: 1024px;
+	border-radius: 18px;
+	opacity: 0.8;
+	transition: opacity 0.5s, border-radius 0.5s ease;
+}
+
+.cloudflareimg
+{
+	margin-top: 12px;
+	cursor: pointer;
+}
+
+.ratimg
+{
+	width: 561px;
+	height: 321px;
+}
+
+.guide-img:hover
+{
+	opacity: 1.0;
+	border-radius: 0px;	
+}
+
+.lox-section
+{
+	margin-top: 70px;
+	color: #878787;
+	font-family: 'Roboto', sans-serif;
+	transition: background-color 1s ease;
+
+}
+
+.lox-section ol li
+{
+	padding-bottom: 7px;
+	color: #aaa;
+}
+
+.lox-section h2
+{
+	color: #757575;
+	border-bottom: 1px solid rgba(128,128,128,0.4);
+}
+
+.lox-section h2:after
+{
+	position: absolute;
+	color: black;
+	content: '🔗';
+	font-size: 14px;
+	margin-left: 5px;
+	margin-top: -5px;
+	cursor: pointer;
+}
+
+.lox-sections-sections
+{
+	margin-left: 62px;
+}
+
+/*.lox-sections-sections h3 a
+{
+	color: rgba(255,255,255,0.5);
+}*/
+
+
+
+.lox-Sections .section-container h2
+{
+	color: rgba(255,255,255,0.7);
+	text-align: center;
+	margin-left: 62px;
+	width: 262px;
+	font-family: 'Fira Sans', sans-serif;
+	font-size: 15pt;
+}
+
+.lox-Sections .lox-sections-sections button
+{
+	margin: 0px;
+	margin: 5px;
+	font-family: "Segoe UI";
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+	outline: none;
+	background-color: rgba(27,27,27,0.9);
+	border: 1px solid rgba(36,36,36,0.4);
+	width: 250px;
+	height: 30px;
+	transition: background-color 0.5s ease;
+}
+
+.lox-Sections .lox-sections-sections button:hover
+{
+	background-color: orangered;
+}
+
+/*.lox-Sections .section-container h3
+{
+	margin: 0px;
+	margin-bottom: 8px;
+	font-family: sans-serif;
+	font-size: 11pt;
+	padding: 5px;
+	width: 250px;
+	color: rgba(255,255,255,0.5);
+	text-align: center;
+	border: 1px solid rgba(128,128,128,0.5);
+	background-color: rgba(20,20,20,0.6);
+	cursor: pointer;
+	transition: background-color 0.5s ease;
+}
+.lox-Sections h3:hover
+{
+	background-color: rgba(30,30,30,0.8);
+}*/
+
+/*END CONTENT*/
+
+
+ .copyright
+{
+	color: white;
+    opacity: 0.5;
+    font-family: "Tahoma", "Segoe UI";
+    font-size: 7pt;
+    text-align: center;
+}
+
+.footer-distributed{
+	background-color: rgb(245,245,245);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+	box-sizing: border-box;
+	border-top: 1px solid rgba(128,128,128,0.3);
+	width: 100%;
+	height: 290px;
+
+	text-align: left;
+	font: bold 16px sans-serif;
+	padding: 40px;
+}
+
+.footer-company-logo
+{
+	width: 100px !important;
+}
+
+.footer-distributed .footer-left,
+.footer-distributed .footer-center,
+.footer-distributed .footer-right{
+	display: inline-block;
+	vertical-align: top;
+}
+
+/* Footer Center */
+
+.footer-distributed .footer-center{
+	text-align: center;
+		width: 45%;
+}
+
+/* Footer links */
+
+.footer-distributed .footer-links{
+	color:  #aaa;
+	margin: 20px 0 12px;
+	padding: 0;
+}
+
+.footer-distributed .footer-links a{
+	display:inline-block;
+	line-height: 1.8;
+	text-decoration: none;
+	color:  inherit;
+}
+
+.footer-distributed .footer-company-name{
+	color:  #8f9296;
+	font-size: 14px;
+	font-weight: normal;
+	margin: 0;
+}
+
+/* Footer Right */
+
+.footer-distributed .footer-right{
+	width: 20%;
+	float: right;
+}
+
+.footer-distributed .footer-right i{
+	background-color:  rgba(200,200,200,0.5);
+	color: #707070;
+	font-size: 25px;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 42px;
+	margin: 10px 15px;
+	vertical-align: middle;
+}
+
+.footer-distributed .footer-right i.fa-envelope{
+	font-size: 17px;
+	line-height: 38px;
+}
+
+.footer-distributed .footer-right p{
+	display: inline-block;
+	color: #aaa;
+	vertical-align: middle;
+	margin:0;
+}
+
+.footer-distributed .footer-right p span{
+	display:block;
+	font-weight: normal;
+	font-size:14px;
+	line-height:2;
+}
+
+.footer-distributed .footer-right p a{
+	color:  #5383d3;
+	text-decoration: none;
+}
+
+
+/* Footer Left */
+
+.footer-distributed .footer-left{
+	width: 30%;
+}
+
+.footer-distributed .footer-company-about{
+	line-height: 20px;
+	color:  #92999f;
+	font-size: 13px;
+	font-weight: normal;
+	margin: 0;
+}
+
+.footer-distributed .footer-company-about span{
+	display: block;
+	color:  #878787;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.footer-distributed .footer-icons{
+	margin-top: 15px;
+}
+
+.footer-distributed .footer-icons a{
+	display: inline-block;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+	background-color: rgba(200,200,200,0.5);
+	border-radius: 2px;
+
+	font-size: 20px;
+	color: #707070;
+	text-align: center;
+	line-height: 35px;
+
+	margin-right: 3px;
+	margin-bottom: 5px;
+	transition: background-color 0.5s, color 0.5s, border-radius 0.5s ease;
+}
+
+.footer-distributed .footer-icons a.facebook:hover
+{
+	color: white;
+	background-color: rgb(66,103,178);
+}
+
+.footer-distributed .footer-icons a.youtube:hover
+{
+	color: white;
+	background-color: rgb(255,1,1);
+}
+
+.footer-distributed .footer-icons a.github:hover
+{
+	background-color: white;
+	color: rgb(23,21,21) !important;
+}
+
+.footer-distributed .footer-icons a.steam:hover
+{
+	border-radius: 20px;
+	color: white;
+	background-color: #171A21;
+}
+
+.footer-distributed .footer-icons a.twitter:hover
+{
+	border-radius: 20px;
+	color: #FFFFFF;
+	background-color: #1DA1F2;
+}
+
+@media (max-width: 880px) {
+
+	.footer-distributed{
+		font: bold 14px sans-serif;
+	}
+
+	.footer-distributed .footer-left,
+	.footer-distributed .footer-center,
+	.footer-distributed .footer-right{
+		display: block;
+		width: 100%;
+		margin-bottom: 40px;
+		text-align: center;
+	}
+
+	.footer-distributed .footer-right i{
+		margin-left: 0;
+	}
+
+	div.footer-center
+	{
+		display: none !important;
+	}
+	div.footer-right
+	{
+		display: none !important;
+	}
+
+	div.Header .header-fixed .header-limiter nav
+	{
+		display: none !important;
+	}
+
+	.header-company-logo-name
+	{
+		min-width: 100%;
+		position: absolute;
+		text-align: center;
+	}
+
+	.grid-container 
+	{
+		grid-template-columns: 30px 2fr 2fr 30px;
+		grid-template-rows: 120px 1fr 230px;
+		overflow-x: hidden;
+	}
+}
