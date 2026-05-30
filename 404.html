@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/core-img/favicon.png">
     <title>404 - Page Not Found</title>
     <style>
         :root {
@@ -17,7 +18,8 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 40px 0 0 0;
+            box-sizing: border-box;
             background-color: var(--bg-dark);
             background-image: radial-gradient(circle at 50% 0%, #1f2937 0%, transparent 70%);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -27,13 +29,15 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto; 
             text-align: center;
         }
 
         .header {
             margin-bottom: 30px;
             animation: fadeIn 1s ease-out;
+            padding: 0 15px;
         }
 
         h1 {
@@ -59,12 +63,12 @@
         #game-wrapper {
             position: relative;
             background: var(--bg-panel);
-            padding: 10px;
+            padding: 12px;
             border-radius: 16px;
             border: 1px solid var(--border-color);
             box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255, 138, 0, 0.05);
             margin-bottom: 40px;
-            max-width: 90vw;
+            max-width: 95vw;
         }
 
         canvas {
@@ -72,11 +76,12 @@
             border-radius: 10px;
             display: block;
             max-width: 100%;
+            height: auto;
         }
 
         #overlay {
             position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
             background: rgba(11, 15, 25, 0.85);
             border-radius: 10px;
             display: flex;
@@ -89,18 +94,22 @@
         }
 
         #overlay-title {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             background: var(--brand-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 0 10px;
         }
 
         .overlay-subtext {
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
             font-weight: 400;
+            text-align: center;
+            line-height: 1.4;
         }
 
         .home-btn {
@@ -124,9 +133,34 @@
             filter: brightness(1.1);
         }
 
+        .footer {
+            position: relative;
+            margin-top: auto;   
+            padding: 40px 15px 20px 15px; 
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.75rem;
+            color: #64748b; 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+            font-weight: 500;
+            opacity: 0.6;
+            pointer-events: none; 
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 5rem; }
+            .footer { 
+                font-size: 0.6rem;
+                letter-spacing: 1px;
+            }
+            #overlay-title { font-size: 1.8rem; }
+            .overlay-subtext { font-size: 1rem; }
         }
     </style>
 </head>
@@ -138,7 +172,7 @@
     </div>
 
     <div id="game-wrapper">
-        <canvas id="gameCanvas" width="700" height="220"></canvas>
+        <canvas id="gameCanvas" width="800" height="280"></canvas>
         <div id="overlay">
             <span id="overlay-title">System Error: Run</span>
             <span class="overlay-subtext" id="overlay-desc">Press SPACE or Tap to jump</span>
@@ -146,6 +180,10 @@
     </div>
 
     <a href="/" class="home-btn">Return to Dashboard</a>
+
+    <div class="footer">
+        © 2026 DESKASOFT INTERNATIONAL. ALL RIGHTS RESERVED.
+    </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -156,23 +194,25 @@
 
         let player, obstacles, particles, score, gameSpeed, frameId, isPlaying, frameCount;
 
+        const groundHeight = 26; 
+
         function init() {
-            player = { x: 60, y: 170, w: 24, h: 24, dy: 0, jumpForce: 8.5, grounded: false };
+            player = { x: 80, y: canvas.height - groundHeight - 32, w: 32, h: 32, dy: 0, jumpForce: 10.5, grounded: false };
             obstacles = [];
             particles = [];
             score = 0;
-            gameSpeed = 3.5;
+            gameSpeed = 4.2;
             frameCount = 0;
             isPlaying = true;
             overlay.style.display = 'none';
             cancelAnimationFrame(frameId);
-
-            for(let i = 0; i < 40; i++) {
+            
+            for(let i = 0; i < 45; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
-                    y: Math.random() * (canvas.height - 20),
-                    size: Math.random() * 2 + 0.5,
-                    speed: Math.random() * 0.5 + 0.1,
+                    y: Math.random() * (canvas.height - groundHeight),
+                    size: Math.random() * 2.5 + 0.5,
+                    speed: Math.random() * 0.6 + 0.1,
                     opacity: Math.random() * 0.5 + 0.1
                 });
             }
@@ -200,11 +240,11 @@
         overlay.addEventListener('click', init);
 
         function spawnObstacle() {
-            let height = 25 + Math.random() * 20; 
+            let height = 35 + Math.random() * 25; 
             obstacles.push({
                 x: canvas.width,
-                y: canvas.height - height - 20,
-                w: 18,
+                y: canvas.height - height - groundHeight,
+                w: 24,
                 h: height
             });
         }
@@ -224,24 +264,24 @@
                 ctx.fill();
             });
 
-            player.dy += 0.4; 
+            player.dy += 0.5; 
             player.y += player.dy;
 
-            if (player.y + player.h >= canvas.height - 20) {
-                player.y = canvas.height - 20 - player.h;
+            if (player.y + player.h >= canvas.height - groundHeight) {
+                player.y = canvas.height - groundHeight - player.h;
                 player.dy = 0;
                 player.grounded = true;
             }
 
             ctx.fillStyle = '#ff8a00';
             ctx.shadowColor = '#ff8a00';
-            ctx.shadowBlur = 15;
+            ctx.shadowBlur = 18;
             ctx.beginPath();
-            ctx.roundRect ? ctx.roundRect(player.x, player.y, player.w, player.h, 4) : ctx.fillRect(player.x, player.y, player.w, player.h);
+            ctx.roundRect ? ctx.roundRect(player.x, player.y, player.w, player.h, 6) : ctx.fillRect(player.x, player.y, player.w, player.h);
             ctx.fill();
             ctx.shadowBlur = 0;
 
-            if (frameCount % Math.max(90, 150 - Math.floor(score/5)) === 0) {
+            if (frameCount % Math.max(80, 130 - Math.floor(score/5)) === 0) {
                 spawnObstacle();
             }
 
@@ -249,7 +289,7 @@
                 let obs = obstacles[i];
                 obs.x -= gameSpeed;
 
-                let margin = 3; 
+                let margin = 4; 
                 if (player.x + margin < obs.x + obs.w &&
                     player.x + player.w - margin > obs.x &&
                     player.y + margin < obs.y + obs.h &&
@@ -257,57 +297,58 @@
                     
                     isPlaying = false;
                     overlayTitle.innerText = "Connection Dropped";
-                    overlayDesc.innerHTML = `Packets Transmitted: ${Math.floor(score)}<br><br>Click to reconnect`;
+                    overlayDesc.innerHTML = `Packets Transmitted: ${Math.floor(score)}<br><br>Tap to reconnect`;
                     overlay.style.display = 'flex';
                 }
 
                 ctx.fillStyle = '#ff384a';
                 ctx.shadowColor = 'rgba(255, 56, 74, 0.6)';
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 12;
                 ctx.beginPath();
-                ctx.roundRect ? ctx.roundRect(obs.x, obs.y, obs.w, obs.h, 3) : ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+                ctx.roundRect ? ctx.roundRect(obs.x, obs.y, obs.w, obs.h, 4) : ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
                 ctx.fill();
 
                 ctx.shadowBlur = 0;
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.font = '600 11px sans-serif';
-                ctx.fillText('404', obs.x - 3, obs.y - 8);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.font = '700 14px sans-serif';
+                ctx.fillText('404', obs.x - 2, obs.y - 10);
             }
 
             obstacles = obstacles.filter(obs => obs.x + obs.w > 0);
 
             ctx.fillStyle = '#1f2937';
-            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+            ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
             ctx.fillStyle = '#ff8a00';
             ctx.shadowColor = '#ff8a00';
-            ctx.shadowBlur = 10;
-            ctx.fillRect(0, canvas.height - 20, canvas.width, 2);
+            ctx.shadowBlur = 12;
+            ctx.fillRect(0, canvas.height - groundHeight, canvas.width, 3);
             ctx.shadowBlur = 0;
 
-            score += 0.05;
+            score += 0.05; 
             if (Math.floor(score) % 50 === 0 && score > 0) {
-                gameSpeed += 0.005;
+                gameSpeed += 0.006; 
             }
 
             ctx.fillStyle = '#94a3b8';
-            ctx.font = '600 14px -apple-system, sans-serif';
-            ctx.fillText(`SCORE: ${Math.floor(score)}`, 20, 30);
+            ctx.font = '600 18px -apple-system, sans-serif';
+            ctx.fillText(`SCORE: ${Math.floor(score)}`, 25, 35);
 
             frameCount++;
             if (isPlaying) {
                 frameId = requestAnimationFrame(gameLoop);
             }
         }
-        
+
         ctx.fillStyle = '#1f2937';
-        ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+        ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
         ctx.fillStyle = '#ff8a00';
-        ctx.fillRect(0, canvas.height - 20, canvas.width, 2);
+        ctx.fillRect(0, canvas.height - groundHeight, canvas.width, 3);
         
         ctx.shadowColor = '#ff8a00';
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 18;
         ctx.beginPath();
-        ctx.roundRect ? ctx.roundRect(60, canvas.height - 20 - 24, 24, 24, 4) : ctx.fillRect(60, canvas.height - 20 - 24, 24, 24);
+
+        ctx.roundRect ? ctx.roundRect(80, canvas.height - groundHeight - 32, 32, 32, 6) : ctx.fillRect(80, canvas.height - groundHeight - 32, 32, 32);
         ctx.fill();
     </script>
 </body>
