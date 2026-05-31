@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seni Kaybedemem</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+            color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Kül efekti için Canvas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Metinlerin stili */
+        #text-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            font-size: 2.2rem;
+            line-height: 1.5;
+            max-width: 75%;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            font-style: italic;
+        }
+
+        /* Kalpler için kapsayıcı */
+        #heart-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Karanlık temaya uygun kalp stili */
+        .heart {
+            position: absolute;
+            color: #8b0000; /* Koyu kan kırmızısı */
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            font-size: 2rem;
+            opacity: 0;
+            animation: floatHeart 5s ease-in-out forwards;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(20px) scale(0.5); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            #text-container { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="ash-canvas"></canvas>
+    <div id="heart-container"></div>
+    <div id="text-container"></div>
+
+    <script>
+        // 1. Kül (Ash) Efekti - Parçacık Sistemi
+        const canvas = document.getElementById('ash-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const ashes = [];
+        const ashCount = 120; // Kül yoğunluğu
+
+        for (let i = 0; i < ashCount; i++) {
+            ashes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5 + 0.5,
+                vx: (Math.random() - 0.5) * 1,
+                vy: Math.random() * -1.5 - 0.5,
+                opacity: Math.random() * 0.7 + 0.1,
+                sway: Math.random() * Math.PI * 2 // Rüzgar salınımı için
+            });
+        }
+
+        function drawAshes() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ashes.forEach(ash => {
+                ctx.beginPath();
+                ctx.arc(ash.x, ash.y, ash.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(180, 180, 180, ${ash.opacity})`;
+                ctx.fill();
+
+                // Küllerin hafifçe sağa sola salınarak yükselmesi
+                ash.sway += 0.02;
+                ash.x += Math.sin(ash.sway) * 0.5 + ash.vx;
+                ash.y += ash.vy;
+
+                // Ekranda yukarıdan çıkan külü aşağıdan tekrar başlat
+                if (ash.y < 0) {
+                    ash.y = canvas.height + 10;
+                    ash.x = Math.random() * canvas.width;
+                }
+            });
+            requestAnimationFrame(drawAshes);
+        }
+        drawAshes();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // 2. Metinlerin ve Kalplerin Animasyonu
+        const texts = [
+            "Umarım anlattıklarımın ne kadar derin olduğunu fark edebilmişsindir.",
+            "Ben seni kaybedemem, her ne olursa olsun.",
+            "Bu bir yarış değil. Gerekirse egosuz olurum, ama seni kaybedemem, B.",
+            "Seni çok ama çok seviyorum",
+            "Hayatımdaki varolup görebileceğim en büyük anlamın yıllardır yazdığım kullandığım B harfi ile başlayacağını bilemezdim."
+        ];
+
+        const textContainer = document.getElementById('text-container');
+        const heartContainer = document.getElementById('heart-container');
+        let currentIndex = 0;
+
+        function createHearts() {
+            // Ekranda rastgele noktalarda kalpler oluştur
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '&#10084;'; 
+                    heart.className = 'heart';
+                    
+                    // Rastgele pozisyonlar ve boyutlar
+                    heart.style.left = Math.random() * 90 + 5 + 'vw';
+                    heart.style.top = Math.random() * 90 + 5 + 'vh';
+                    heart.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                    
+                    heartContainer.appendChild(heart);
+                    
+                    // Animasyon bittikten sonra HTML'i temizle
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 150); // Kalplerin art arda, kademeli çıkması
+            }
+        }
+
+        function showNextText() {
+            if (currentIndex >= texts.length) return;
+
+            // Metni yazdır
+            textContainer.innerText = texts[currentIndex];
+            
+            // 4. cümledeyiz (index 3) - Kalpleri başlat
+            if (currentIndex === 3) {
+                createHearts();
+            }
+
+            // Görünür yap (Fade-in)
+            textContainer.style.opacity = 1;
+
+            // Ekranda kalma süresi
+            const displayDuration = 5500; 
+
+            setTimeout(() => {
+                // Son cümle ise ekranda sabit kalsın, silinmesin
+                if (currentIndex === texts.length - 1) {
+                    textContainer.style.opacity = 1;
+                } else {
+                    // Diğer cümleleri gizle (Fade-out)
+                    textContainer.style.opacity = 0;
+                    currentIndex++;
+                    
+                    // Tamamen silindikten sonra diğerine geç
+                    setTimeout(showNextText, 2000); 
+                }
+            }, displayDuration);
+        }
+
+        // Başlangıç için kısa bir süre bekle ve ilk cümleyi göster
+        setTimeout(showNextText, 1500);
+
+    </script>
+</body>
+</html>
